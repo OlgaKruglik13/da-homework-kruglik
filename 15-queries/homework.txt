@@ -1,26 +1,63 @@
 ﻿Задача 1
-#Вместо этой строки сюда писать запрос - ответ на задачу 1
-k
+
+SELECT orderNumber, productCode, quantityOrdered * priceEach AS price
+FROM `orderdetails` 
+ORDER BY price DESC
+LIMIT 10
 
 Задача 2
-#Вместо этой строки сюда писать запрос - ответ на задачу 2
 
+SELECT orderNumber, SUM(quantityOrdered * priceEach) AS total
+FROM `orderdetails` 
+GROUP BY orderNumber
+HAVING total > 59000
 
 Задача 3
-#Вместо этой строки сюда писать запрос - ответ на задачу 3
 
+SELECT orderdetails.orderNumber, orderDate, status, SUM(quantityOrdered * priceEach) AS total
+FROM `orderdetails` 
+INNER JOIN `orders`
+ON orders.orderNumber = orderdetails.orderNumber
+GROUP BY orderNumber
+HAVING total > 59000
 
 Задача 4
-#Вместо этой строки сюда писать запрос - ответ на задачу 4
 
+SELECT contactFirstName, contactLastName, country, orderdetails.orderNumber, orderDate, status, SUM(quantityOrdered * priceEach) AS total
+FROM `orderdetails` 
+INNER JOIN `orders`
+ON orders.orderNumber = orderdetails.orderNumber
+INNER JOIN `customers`
+ON customers.customerNumber = orders.customerNumber
+GROUP BY orderNumber
+HAVING total > 59000
 
 Задача 5
-#Вместо этой строки сюда писать запрос - ответ на задачу 5
 
+SELECT productName, SUM(quantityOrdered * priceEach) AS total
+FROM `orderdetails` 
+INNER JOIN `products`
+ON products.productCode = orderdetails.productCode
+GROUP BY productName
+ORDER BY total DESC
+LIMIT 10
 
 Задача 6
-#Вместо этой строки сюда писать запрос - ответ на задачу 6
 
+SELECT DISTINCT firstName, lastName, contactFirstName, contactLastName
+FROM `employees` 
+LEFT JOIN `customers`
+ON customers.customerNumber = employees.employeeNumber
+UNION
+SELECT DISTINCT firstName, lastName, contactFirstName, contactLastName
+FROM `employees` 
+RIGHT JOIN `customers`
+ON customers.customerNumber = employees.employeeNumber
 
 Задача 7
-#Вместо этой строки сюда писать запрос - ответ на задачу 7
+
+SELECT t2.firstName as firstName, t2.lastName as lastName, 
+t2.jobTitle as jobTitle, t1.firstName as subFirstName,  t1.lastName as subLastName 
+FROM `employees` t1
+RIGHT JOIN `employees` t2
+ON t1.reportsTo = t2.employeeNumber
